@@ -1,0 +1,8 @@
+.progress-wrapper {
+  margin-top: 30px;
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+}

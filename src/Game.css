@@ -1,0 +1,88 @@
+.toggle-sound {
+  padding: 1rem 0;
+  margin-top: 20px;
+}
+
+.icons {
+  margin: 10px 0;
+}
+
+.form {
+  margin: 60px 0;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.input-wrapper {
+  display: flex;
+  position: relative;
+}
+
+.confirm-button {
+  margin-left: 15px;
+}
+
+.input {
+  padding: 10px;
+}
+
+.table-wrapper {
+  margin-top: 30px;
+}
+
+.answers {
+  width: 100%;
+}
+
+.answer {
+  margin-bottom: 20px;
+}
+
+.answer td:nth-child(1) {
+  width: 6em;
+}
+
+.answer td:nth-child(2) {
+  width: 80px;
+}
+
+.answer .icon {
+  margin-left: 10px;
+}
+
+.answer-photo {
+  width: 100%;
+}
+
+.answer-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  vertical-align: middle;
+}
+
+.answer-name .coin {
+  margin-left: 10px;
+}
+
+.answer-animation {
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 3;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.links .icon {
+  vertical-align: middle;
+}
