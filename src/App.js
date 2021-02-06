@@ -31,7 +31,7 @@ function renderErrorMessage({ code, orgSlug }) {
 function App() {
   const [errorCode, setErrorCode] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isFetching, setIsFetching] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
   const [org, setOrg] = useState();
   const [people, setPeople] = useState([]);
 
@@ -41,6 +41,8 @@ function App() {
 
   useEffect(() => {
     const fetchDataFromGithub = async () => {
+      setIsFetching(true);
+
       try {
         const octokit = new Octokit();
         const { org, people } = await fetchFromGithub({ octokit, orgSlug });
@@ -56,6 +58,8 @@ function App() {
       }
     };
     const fetchDataFromFunction = async (code) => {
+      setIsFetching(true);
+
       try {
         const { data } = await axios(`/.netlify/functions/get-people`, {
           data: {

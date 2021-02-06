@@ -1,4 +1,4 @@
-module.exports.fetch = async ({ octokit, orgSlug }) => {
+exports.fetch = async ({ octokit, orgSlug }) => {
   const { data: org } = await octokit.orgs.get({
     org: orgSlug,
   });
@@ -29,7 +29,7 @@ module.exports.fetch = async ({ octokit, orgSlug }) => {
   };
 };
 
-module.exports.getSignInLink = () =>
+exports.getSignInLink = () =>
   `https://github.com/login/oauth/authorize?client_id=874c43adb13e94ceeab0&scope=user,repo&redirect_uri=${encodeURIComponent(
     window.location.origin + window.location.pathname
   )}`;
