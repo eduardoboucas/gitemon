@@ -1,8 +1,7 @@
 import React from "react";
+import { getSignInLink } from "./lib/github";
 import { formatTime } from "./lib/utils";
 import "./Progress.css";
-
-const { getSignInLink } = require("./lib/github");
 
 function Progress({ isAuthenticated, correctAnswers, timeElapsed, people }) {
   return (
