@@ -1,11 +1,12 @@
 import { Octokit } from "@octokit/rest";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { fetch as fetchFromGithub, getSignInLink } from "./lib/github";
 import Layout from "./Layout";
 import Game from "./Game";
 import Switchboard from "./Switchboard";
 import "./App.css";
+
+const { fetch: fetchFromGithub, getSignInLink } = require("./lib/github");
 
 function renderErrorMessage({ code, orgSlug }) {
   if (code === 403) {
