@@ -1,6 +1,6 @@
 const { createOAuthAppAuth } = require("@octokit/auth-oauth-app");
 const { Octokit } = require("@octokit/rest");
-const { fetch: fetchFromGithub } = require("../../src/lib/github");
+const { fetch: fetchFromGithub } = require("../../src/lib/github-cjs");
 
 exports.handler = async (event, context) => {
   try {
