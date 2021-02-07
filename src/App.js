@@ -45,7 +45,7 @@ function App() {
 
       try {
         const octokit = new Octokit();
-        const { isPartialResponse, org, people } = await fetchFromGithub({
+        const { org, people } = await fetchFromGithub({
           octokit,
           orgSlug,
         });
