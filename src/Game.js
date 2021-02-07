@@ -40,6 +40,7 @@ function Game({ isAuthenticated, isFetching, people }) {
 
     people.forEach(({ name }, index) => {
       if (
+        name &&
         candidateAnswer === name.toUpperCase() &&
         correctAnswers.indexOf(index) === -1
       ) {
@@ -51,6 +52,7 @@ function Game({ isAuthenticated, isFetching, people }) {
     if (newCorrectAnswers.length === 0) {
       people.forEach(({ username }, index) => {
         if (
+          username &&
           candidateAnswer === username.toUpperCase() &&
           correctAnswers.indexOf(index) === -1
         ) {
@@ -158,7 +160,7 @@ function Game({ isAuthenticated, isFetching, people }) {
                     </td>
                     <td>
                       <span className="answer-animation answer-name">
-                        {name}
+                        {name || username}
                         {isFullMatch && <i className="icon nes-icon star"></i>}
                       </span>
                     </td>
