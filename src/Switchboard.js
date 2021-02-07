@@ -13,17 +13,20 @@ function Switchboard() {
     <div className="constrain">
       <form onSubmit={navigate}>
         <div className="switchboard-controls">
-          <label className="org-label" htmlFor="org-slug">
+          <label className="switchboard-control" htmlFor="org-slug">
             github.com/
           </label>
           <input
             id="org-slug"
             type="text"
-            className="nes-input"
+            className="nes-input switchboard-control switchboard-input"
             onChange={(event) => setOrgSlug(event.target.value)}
             value={orgSlug}
           />
-          <a href={`/${orgSlug}`} className="nes-btn is-primary">
+          <a
+            href={`/${orgSlug}`}
+            className="nes-btn is-primary switchboard-control"
+          >
             Go
           </a>
         </div>

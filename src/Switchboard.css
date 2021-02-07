@@ -2,12 +2,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
-.switchboard-controls * + * {
-  margin-left: 10px;
+.switchboard-control {
+  margin: 10px;
 }
 
-.org-label {
-  margin: 0;
+.switchboard-input {
+  flex-grow: 1;
+  width: auto;
 }
