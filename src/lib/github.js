@@ -1,3 +1,5 @@
+const MAX_MEMBERS = 200;
+
 export const fetch = async ({ octokit, orgSlug }) => {
   const { data: org } = await octokit.orgs.get({
     org: orgSlug,
@@ -10,12 +12,17 @@ export const fetch = async ({ octokit, orgSlug }) => {
   const members = await octokit.paginate("GET /orgs/{org}/members", {
     org: orgSlug,
   });
+  const isPartialResponse = members.length > MAX_MEMBERS;
   const users = await Promise.all(
-    members.map((member) =>
-      octokit.users.getByUsername({
+    members.map((member) => {
+      if (isPartialResponse) {
+        return { data: member };
+      }
+
+      return octokit.users.getByUsername({
         username: member.login,
-      })
-    )
+      });
+    })
   );
   const people = users.map(({ data: user }) => ({
     username: user.login,
@@ -24,6 +31,7 @@ export const fetch = async ({ octokit, orgSlug }) => {
   }));
 
   return {
+    isPartialResponse,
     org: orgObject,
     people,
   };

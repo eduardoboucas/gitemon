@@ -32,6 +32,7 @@ function App() {
   const [errorCode, setErrorCode] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const [isPartialResponse, setIsPartialResponse] = useState(false);
   const [org, setOrg] = useState();
   const [people, setPeople] = useState([]);
 
@@ -45,8 +46,12 @@ function App() {
 
       try {
         const octokit = new Octokit();
-        const { org, people } = await fetchFromGithub({ octokit, orgSlug });
+        const { isPartialResponse, org, people } = await fetchFromGithub({
+          octokit,
+          orgSlug,
+        });
 
+        setIsPartialResponse(isPartialResponse);
         setOrg(org);
         setPeople(people);
       } catch (error) {
@@ -70,6 +75,7 @@ function App() {
         });
 
         setIsAuthenticated(true);
+        setIsPartialResponse(data.isPartialResponse);
         setOrg(data.org);
         setPeople(data.people);
       } catch (error) {
@@ -99,6 +105,7 @@ function App() {
     errorCode,
     isAuthenticated,
     isFetching,
+    isPartialResponse,
     people,
     org,
     orgSlug,

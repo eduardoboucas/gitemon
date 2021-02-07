@@ -16,11 +16,14 @@ exports.handler = async (event, context) => {
     const octokit = new Octokit({
       auth: token,
     });
-    const { org, people } = await fetchFromGithub({ octokit, orgSlug });
+    const { isPartialResponse, org, people } = await fetchFromGithub({
+      octokit,
+      orgSlug,
+    });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ org, people }),
+      body: JSON.stringify({ isPartialResponse, org, people }),
       headers: {
         "Content-Type": "application/json",
       },
