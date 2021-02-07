@@ -1,3 +1,8 @@
 [build]
-command = "yarn build"
-publish = "build/"
+  command = "yarn build"
+  publish = "build/"
+
+[template.environment]
+  GITHUB_APP_CLIENT_ID = "Client ID for the GitHub App"
+  REACT_APP_GITHUB_APP_CLIENT_ID = "Client ID for the GitHub App"
+  GITHUB_APP_CLIENT_SECRET = "Client secret for the GitHub App"
