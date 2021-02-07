@@ -24,8 +24,8 @@ function Header({ isFetching, org, orgSlug }) {
 
     return (
       <>
-        <p>How well do you know the people of {name}?</p>
-        <p>See how many you can catch by typing their names.</p>
+        <p>Do you know the lovely people of {name}?</p>
+        <p>Type their names below and see how many you can catch!</p>
         <sub>
           If you summon them by their GitHub username, you win 1 point.
           <br />

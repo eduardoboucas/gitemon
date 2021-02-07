@@ -30,6 +30,8 @@ export const fetch = async ({ octokit, orgSlug }) => {
 };
 
 export const getSignInLink = () =>
-  `https://github.com/login/oauth/authorize?client_id=874c43adb13e94ceeab0&scope=user,repo&redirect_uri=${encodeURIComponent(
+  `https://github.com/login/oauth/authorize?client_id=${
+    process.env.REACT_APP_GITHUB_APP_CLIENT_ID
+  }&scope=user,repo&redirect_uri=${encodeURIComponent(
     window.location.origin + window.location.pathname
   )}`;

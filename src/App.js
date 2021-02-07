@@ -11,7 +11,9 @@ function renderErrorMessage({ code, orgSlug }) {
   if (code === 403) {
     return (
       <>
-        <p>You've reached the rate limiting of the GitHub API.</p>
+        <p>
+          Uh-oh! You've reached the limit of unauthorized requests to GitHub.
+        </p>
         <p>
           To continue playing, <a href={getSignInLink()}>sign in with GitHub</a>
           .
