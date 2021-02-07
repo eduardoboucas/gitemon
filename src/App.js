@@ -32,6 +32,7 @@ function App() {
   const [errorCode, setErrorCode] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const [isPartialResponse, setIsPartialResponse] = useState(false);
   const [org, setOrg] = useState();
   const [people, setPeople] = useState([]);
 
@@ -70,6 +71,7 @@ function App() {
         });
 
         setIsAuthenticated(true);
+        setIsPartialResponse(data.isPartialResponse);
         setOrg(data.org);
         setPeople(data.people);
       } catch (error) {
@@ -99,6 +101,7 @@ function App() {
     errorCode,
     isAuthenticated,
     isFetching,
+    isPartialResponse,
     people,
     org,
     orgSlug,

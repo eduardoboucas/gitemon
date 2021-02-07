@@ -1,3 +1,5 @@
+const MAX_MEMBERS = 200;
+
 export const fetch = async ({ octokit, orgSlug }) => {
   const { data: org } = await octokit.orgs.get({
     org: orgSlug,
@@ -11,11 +13,15 @@ export const fetch = async ({ octokit, orgSlug }) => {
     org: orgSlug,
   });
   const users = await Promise.all(
-    members.map((member) =>
-      octokit.users.getByUsername({
+    members.map((member) => {
+      if (members.length > MAX_MEMBERS) {
+        return { data: member };
+      }
+
+      return octokit.users.getByUsername({
         username: member.login,
-      })
-    )
+      });
+    })
   );
   const people = users.map(({ data: user }) => ({
     username: user.login,
