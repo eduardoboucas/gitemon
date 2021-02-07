@@ -7,3 +7,7 @@
 .switchboard-controls * + * {
   margin-left: 10px;
 }
+
+.org-label {
+  margin: 0;
+}
