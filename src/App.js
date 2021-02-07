@@ -124,7 +124,7 @@ function App() {
   if (isFetching) {
     return (
       <Layout {...props}>
-        <p>Loading...</p>
+        <p>Loading the GitHub organization...</p>
       </Layout>
     );
   }

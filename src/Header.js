@@ -14,7 +14,7 @@ function Header({ errorCode, isFetching, org, orgSlug }) {
   }
 
   const renderFetching = () => {
-    return <p>Loading GitHub organization...</p>;
+    return <p>Hold tight</p>;
   };
 
   const renderOrg = () => {
