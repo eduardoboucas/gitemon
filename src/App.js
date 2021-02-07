@@ -11,13 +11,12 @@ function renderErrorMessage({ code, orgSlug }) {
   if (code === 403) {
     return (
       <>
-        <p>
-          Uh-oh! You've reached the limit of unauthorized requests to GitHub.
-        </p>
-        <p>
-          To continue playing, <a href={getSignInLink()}>sign in with GitHub</a>
-          .
-        </p>
+        <p>You've reached the limit of unauthorized API requests.</p>
+        <p>To continue playing, sign in with your GitHub account.</p>
+        <br />
+        <a className="nes-btn is-primary" href={getSignInLink()}>
+          Sign In
+        </a>
       </>
     );
   }
@@ -97,6 +96,7 @@ function App() {
   }, [orgSlug]);
 
   const props = {
+    errorCode,
     isAuthenticated,
     isFetching,
     people,

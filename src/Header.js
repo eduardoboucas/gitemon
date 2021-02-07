@@ -1,7 +1,7 @@
 import React from "react";
 import "./Header.css";
 
-function Header({ isFetching, org, orgSlug }) {
+function Header({ errorCode, isFetching, org, orgSlug }) {
   const name = isFetching ? null : (org && org.name) || orgSlug;
   let { photoUrl } = org || {};
 
@@ -18,6 +18,10 @@ function Header({ isFetching, org, orgSlug }) {
   };
 
   const renderOrg = () => {
+    if (errorCode) {
+      return <p>Uh-oh!</p>;
+    }
+
     if (!name) {
       return <p>Choose a GitHub organization</p>;
     }
