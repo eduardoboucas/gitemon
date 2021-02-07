@@ -170,7 +170,7 @@ function Game({ isAuthenticated, isFetching, people }) {
         </div>
       )}
 
-      {!isFetching && (
+      {!isFetching && !hasFinished && (
         <Progress
           isAuthenticated={isAuthenticated}
           correctAnswers={correctAnswers}
