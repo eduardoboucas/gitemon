@@ -1,7 +1,7 @@
 import React from "react";
 import "./Header.css";
 
-function Header({ errorCode, isFetching, isPartialResponse, org, orgSlug }) {
+function Header({ errorCode, isFetching, org, orgSlug }) {
   const name = isFetching ? null : (org && org.name) || orgSlug;
   let { photoUrl } = org || {};
 
@@ -26,25 +26,14 @@ function Header({ errorCode, isFetching, isPartialResponse, org, orgSlug }) {
       return <p>Choose a GitHub organization</p>;
     }
 
-    // Getting member names involves making a request to the GitHub API for each
-    // member. This doesn't work well for large organizations. For those, we only
-    // get a basic set of data about members (such as the login and the avatar),
-    // so the full name will not be an option. The game will adjust accordingly.
-    const instructions = isPartialResponse ? (
-      <sub>Summon them by their GitHub username to win 1 point.</sub>
-    ) : (
-      <sub>
-        If you summon them by their GitHub username, you win 1 point.
-        <br />
-        If you know their full name, you get 5!
-      </sub>
-    );
-
     return (
       <>
-        <p>Do you know the lovely people of {name}?</p>
-        <p>Type their names below and see how many you can catch!</p>
-        {instructions}
+        <p>How well do you know the lovely people of {name}?</p>
+        <p>Type their GitHub usernames and see how many you can catch!</p>
+        <sub>
+          Win points for every person you summon. The faster you are, the more
+          points you get!
+        </sub>
       </>
     );
   };

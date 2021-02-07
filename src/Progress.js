@@ -3,11 +3,18 @@ import { getSignInLink } from "./lib/github";
 import { formatTime } from "./lib/utils";
 import "./Progress.css";
 
-function Progress({ isAuthenticated, correctAnswers, timeElapsed, people }) {
+function Progress({
+  authenticatedUser,
+  correctAnswers,
+  elapsedSeconds,
+  people,
+}) {
+  const isAuthenticated = Boolean(authenticatedUser);
+
   return (
     <div className="progress-wrapper">
       <div className="progress-text">
-        <span>{formatTime(timeElapsed)}</span>
+        <span>{formatTime(elapsedSeconds)}</span>
         <span>
           {correctAnswers.length} of {people.length}
         </span>

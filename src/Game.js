@@ -4,15 +4,17 @@ import Progress from "./Progress";
 
 import "./Game.css";
 
-function Game({ isAuthenticated, isFetching, people }) {
-  const [isSoundEnabled, toggleSound] = useState(true);
+function Game({ authenticatedUser, isFetching, people }) {
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [correctAnswers, setCorrectAnswers] = useState([]);
-  const [fullMatches, setFullMatches] = useState([]);
-  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [isSoundEnabled, toggleSound] = useState(true);
+  const [score, setScore] = useState(0);
+
   const correctAnswersCount = correctAnswers.length;
   const hasFinished =
     people.length > 0 && correctAnswersCount === people.length;
+  const isAuthenticated = Boolean(authenticatedUser);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -21,7 +23,7 @@ function Game({ isAuthenticated, isFetching, people }) {
 
         return;
       } else if (!isFetching) {
-        setTimeElapsed(timeElapsed + 1);
+        setElapsedSeconds(elapsedSeconds + 1);
       }
     }, 1000);
 
@@ -33,45 +35,35 @@ function Game({ isAuthenticated, isFetching, people }) {
   const sound3 = new Audio("/sound/win.mp3");
 
   const handleAnswer = (event) => {
-    const candidateAnswer = currentAnswer.toUpperCase();
+    const candidateAnswer = currentAnswer.toLowerCase();
+    const { hasPlayer, indexes: newCorrectAnswers } = people.reduce(
+      (result, person, index) => {
+        const isMatch = person.username === candidateAnswer;
 
-    let newCorrectAnswers = [];
-    let newFullMatches = [];
-
-    people.forEach(({ name }, index) => {
-      if (
-        name &&
-        candidateAnswer === name.toUpperCase() &&
-        correctAnswers.indexOf(index) === -1
-      ) {
-        newCorrectAnswers.push(index);
-        newFullMatches.push(index);
-      }
-    });
-
-    if (newCorrectAnswers.length === 0) {
-      people.forEach(({ username }, index) => {
-        if (
-          username &&
-          candidateAnswer === username.toUpperCase() &&
-          correctAnswers.indexOf(index) === -1
-        ) {
-          newCorrectAnswers.push(index);
-        }
-      });
-    }
-
-    let sound;
+        return {
+          hasPlayer:
+            result.hasPlayer ||
+            (isMatch && person.username === authenticatedUser),
+          indexes: isMatch ? [index, ...result.indexes] : result.indexes,
+        };
+      },
+      { hasPlayer: false, indexes: [] }
+    );
 
     if (newCorrectAnswers.length > 0) {
       const newCorrectAnswersState = [...newCorrectAnswers, ...correctAnswers];
+      const newScore =
+        newCorrectAnswers.length *
+        (1 + Math.max(0, people.length - Math.round(elapsedSeconds / 5)));
 
       setCorrectAnswers(newCorrectAnswersState);
-      setFullMatches([...fullMatches, ...newFullMatches]);
+      setScore(score + newScore);
+
+      let sound;
 
       if (newCorrectAnswersState.length === people.length) {
         sound = sound3;
-      } else if (newFullMatches.length > 0) {
+      } else if (hasPlayer) {
         sound = sound2;
       } else {
         sound = sound1;
@@ -86,11 +78,6 @@ function Game({ isAuthenticated, isFetching, people }) {
     event.preventDefault();
   };
 
-  const score = correctAnswers.reduce(
-    (score, index) => score + (fullMatches.includes(index) ? 5 : 1),
-    0
-  );
-
   return (
     <>
       <div className="controls">
@@ -101,7 +88,7 @@ function Game({ isAuthenticated, isFetching, people }) {
                 <input
                   className="input nes-input"
                   onChange={(event) => setCurrentAnswer(event.target.value)}
-                  placeholder="Type a name"
+                  placeholder="Type a username"
                   value={currentAnswer}
                 />
 
@@ -128,7 +115,7 @@ function Game({ isAuthenticated, isFetching, people }) {
           </p>
           <h2>Congratulations!</h2>
           <p>
-            You finished in <strong>{formatTime(timeElapsed)}</strong> with a
+            You finished in <strong>{formatTime(elapsedSeconds)}</strong> with a
             score of <strong>{score}</strong>.
           </p>
         </>
@@ -139,8 +126,7 @@ function Game({ isAuthenticated, isFetching, people }) {
           <table className="answers nes-table is-bordered is-centered">
             <tbody>
               {correctAnswers.map((index, position) => {
-                const { name, photoUrl, username } = people[index];
-                const isFullMatch = fullMatches.indexOf(index) !== -1;
+                const { photoUrl, username } = people[index];
 
                 return (
                   <tr className="answer" key={username}>
@@ -160,8 +146,10 @@ function Game({ isAuthenticated, isFetching, people }) {
                     </td>
                     <td>
                       <span className="answer-animation answer-name">
-                        {name || username}
-                        {isFullMatch && <i className="icon nes-icon star"></i>}
+                        <strong>{username}</strong>
+                        {username === authenticatedUser && (
+                          <i className="icon nes-icon star"></i>
+                        )}
                       </span>
                     </td>
                   </tr>
@@ -174,10 +162,10 @@ function Game({ isAuthenticated, isFetching, people }) {
 
       {!isFetching && !hasFinished && (
         <Progress
-          isAuthenticated={isAuthenticated}
           correctAnswers={correctAnswers}
+          elapsedSeconds={elapsedSeconds}
+          isAuthenticated={isAuthenticated}
           people={people}
-          timeElapsed={timeElapsed}
         />
       )}
 
