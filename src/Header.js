@@ -42,7 +42,7 @@ function Header({ errorCode, isFetching, org, orgSlug }) {
     <header className="header">
       <div className="constrain">
         <section className="nes-container is-dark with-title">
-          <h1 className="title">Gitémon{name && `: ${name}`}</h1>
+          <h1 className="title">Gitémon</h1>
 
           <div className="header-icons">
             {photoUrl && <img alt="" className="org-avatar" src={photoUrl} />}

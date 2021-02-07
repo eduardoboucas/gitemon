@@ -98,6 +98,12 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orgSlug]);
 
+  useEffect(() => {
+    if (org) {
+      document.title = `Gitémon: ${org.name}`;
+    }
+  }, [org]);
+
   const props = {
     authenticatedUser,
     errorCode,
