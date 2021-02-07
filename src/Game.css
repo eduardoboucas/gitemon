@@ -47,6 +47,12 @@
   width: 6em;
 }
 
+@media (max-width: 650px) {
+  .answer td:nth-child(1) {
+    display: none;
+  }
+}
+
 .answer td:nth-child(2) {
   width: 80px;
 }
