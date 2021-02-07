@@ -12,9 +12,10 @@ export const fetch = async ({ octokit, orgSlug }) => {
   const members = await octokit.paginate("GET /orgs/{org}/members", {
     org: orgSlug,
   });
+  const isPartialResponse = members.length > MAX_MEMBERS;
   const users = await Promise.all(
     members.map((member) => {
-      if (members.length > MAX_MEMBERS) {
+      if (isPartialResponse) {
         return { data: member };
       }
 
@@ -30,6 +31,7 @@ export const fetch = async ({ octokit, orgSlug }) => {
   }));
 
   return {
+    isPartialResponse,
     org: orgObject,
     people,
   };

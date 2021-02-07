@@ -46,8 +46,12 @@ function App() {
 
       try {
         const octokit = new Octokit();
-        const { org, people } = await fetchFromGithub({ octokit, orgSlug });
+        const { isPartialResponse, org, people } = await fetchFromGithub({
+          octokit,
+          orgSlug,
+        });
 
+        setIsPartialResponse(isPartialResponse);
         setOrg(org);
         setPeople(people);
       } catch (error) {
