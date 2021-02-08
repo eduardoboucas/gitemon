@@ -1,7 +1,7 @@
 .people {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .person {
@@ -9,7 +9,6 @@
   margin: 10px 0;
   padding: 0 !important;
   position: relative;
-  left: -6px;
 }
 
 .person-avatar-wrapper {
