@@ -53,12 +53,9 @@ function Game({ authenticatedUser, isFetching, people }) {
 
     if (newCorrectAnswers.length > 0) {
       const newCorrectAnswersState = [...newCorrectAnswers, ...correctAnswers];
-      const newScore =
-        newCorrectAnswers.length *
-        (1 + Math.max(0, people.length - Math.round(elapsedSeconds / 5)));
 
       setCorrectAnswers(newCorrectAnswersState);
-      setScore(score + newScore);
+      setScore(score + 1);
 
       let sound;
 

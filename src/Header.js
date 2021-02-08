@@ -30,11 +30,7 @@ function Header({ errorCode, isFetching, org, orgSlug }) {
     return (
       <>
         <p>How well do you know the lovely people of {name}?</p>
-        <p>Type their GitHub usernames and see how many you can catch!</p>
-        <sub>
-          Win points for every person you summon. The faster you are, the more
-          points you get!
-        </sub>
+        <sub>Type their GitHub usernames and see how many you can catch!</sub>
       </>
     );
   };
