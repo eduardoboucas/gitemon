@@ -15,8 +15,3 @@
 .header-icons * + * {
   margin-left: 20px;
 }
-
-.org-avatar {
-  image-rendering: pixelated;
-  width: 84px;
-}

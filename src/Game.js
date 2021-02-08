@@ -3,6 +3,7 @@ import { formatTime } from "./lib/utils";
 import Progress from "./Progress";
 
 import "./Game.css";
+import People from "./People";
 
 function Game({ authenticatedUser, isFetching, people }) {
   const [currentAnswer, setCurrentAnswer] = useState("");
@@ -121,44 +122,7 @@ function Game({ authenticatedUser, isFetching, people }) {
         </>
       )}
 
-      {correctAnswers.length > 0 && (
-        <div className="table-wrapper">
-          <table className="answers nes-table is-bordered is-centered">
-            <tbody>
-              {correctAnswers.map((index, position) => {
-                const { photoUrl, username } = people[index];
-
-                return (
-                  <tr className="answer" key={username}>
-                    <td>
-                      <span className="answer-animation">
-                        #{correctAnswers.length - position}
-                      </span>
-                    </td>
-                    <td>
-                      <img
-                        className="answer-animation answer-photo"
-                        width={60}
-                        height={60}
-                        src={photoUrl}
-                        alt=""
-                      />
-                    </td>
-                    <td>
-                      <span className="answer-animation answer-name">
-                        <strong>{username}</strong>
-                        {username === authenticatedUser && (
-                          <i className="icon nes-icon star"></i>
-                        )}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <People correctAnswers={correctAnswers} people={people} />
 
       {!isFetching && !hasFinished && (
         <Progress
