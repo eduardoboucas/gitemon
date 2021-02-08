@@ -1,4 +1,5 @@
 import React from "react";
+import PixelatedImage from "./PixelatedImage";
 import "./Header.css";
 
 function Header({ errorCode, isFetching, org, orgSlug }) {
@@ -45,7 +46,9 @@ function Header({ errorCode, isFetching, org, orgSlug }) {
           <h1 className="title">Gitémon</h1>
 
           <div className="header-icons">
-            {photoUrl && <img alt="" className="org-avatar" src={photoUrl} />}
+            {photoUrl && (
+              <PixelatedImage intrinsicSize={16} url={photoUrl} width={84} />
+            )}
             <i className="nes-pokeball"></i>
           </div>
 
