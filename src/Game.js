@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { formatTime } from "./lib/utils";
+import { formatTime, getTimeBonusForPlay } from "./lib/utils";
 import Progress from "./Progress";
 
 import "./Game.css";
@@ -37,31 +37,25 @@ function Game({ authenticatedUser, isFetching, people }) {
 
   const handleAnswer = (event) => {
     const candidateAnswer = currentAnswer.toLowerCase();
-    const { hasPlayer, indexes: newCorrectAnswers } = people.reduce(
-      (result, person, index) => {
-        const isMatch = person.username === candidateAnswer;
-
-        return {
-          hasPlayer:
-            result.hasPlayer ||
-            (isMatch && person.username === authenticatedUser),
-          indexes: isMatch ? [index, ...result.indexes] : result.indexes,
-        };
-      },
-      { hasPlayer: false, indexes: [] }
+    const matchIndex = people.findIndex(
+      (person) => person.username === candidateAnswer
     );
 
-    if (newCorrectAnswers.length > 0) {
-      const newCorrectAnswersState = [...newCorrectAnswers, ...correctAnswers];
+    if (matchIndex !== -1 && !correctAnswers.includes(matchIndex)) {
+      const isPlayer = candidateAnswer === authenticatedUser;
+      const newCorrectAnswersState = [matchIndex, ...correctAnswers];
+      const timeBonus = getTimeBonusForPlay({
+        elapsedSeconds,
+        numberOfPeople: people.length,
+      });
 
-      setCorrectAnswers(newCorrectAnswersState);
-      setScore(score + 1);
+      console.log(`Caught "${candidateAnswer}". Time bonus: ${timeBonus}`);
 
       let sound;
 
       if (newCorrectAnswersState.length === people.length) {
         sound = sound3;
-      } else if (hasPlayer) {
+      } else if (isPlayer) {
         sound = sound2;
       } else {
         sound = sound1;
@@ -70,6 +64,9 @@ function Game({ authenticatedUser, isFetching, people }) {
       if (isSoundEnabled) {
         sound.play();
       }
+
+      setCorrectAnswers(newCorrectAnswersState);
+      setScore(score + 1 + timeBonus);
     }
 
     setCurrentAnswer("");

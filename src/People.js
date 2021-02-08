@@ -9,11 +9,8 @@ function People({ correctAnswers, people }) {
         const isRevealed = correctAnswers.includes(index);
 
         return (
-          <div className="person-container">
-            <div
-              className="nes-container is-rounded person"
-              key={person.username}
-            >
+          <div className="person-container" key={person.username}>
+            <div className="nes-container is-rounded person">
               <div className="person-avatar-wrapper">
                 {isRevealed ? (
                   <img
