@@ -13,12 +13,18 @@ function People({ correctAnswers, people }) {
             <div className="nes-container is-rounded person">
               <div className="person-avatar-wrapper">
                 {isRevealed ? (
-                  <img
-                    alt=""
-                    className="person-avatar"
-                    src={person.photoUrl}
-                    title={person.username}
-                  />
+                  <a
+                    href={`https://github.com/${person.username}`}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    <img
+                      alt=""
+                      className="person-avatar"
+                      src={person.photoUrl}
+                      title={person.username}
+                    />
+                  </a>
                 ) : (
                   <PixelatedImage
                     className="person-avatar-placeholder"

@@ -28,8 +28,8 @@ function Progress({
 
       {!isAuthenticated && (
         <sub>
-          <strong>NOTE</strong>: Only public members of the organization are
-          counted. To load all members of an organization you're part of,{" "}
+          <strong>NOTE</strong>: Only public members of the organization will
+          appear. To load all members of an organization you're part of,{" "}
           <a href={getSignInLink()}>sign in with GitHub</a> and click the{" "}
           <em>Grant</em> button next to the organization name.
         </sub>
