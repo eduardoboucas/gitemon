@@ -43,7 +43,7 @@ function App() {
 
   const url = new URL(window.location.href);
   const code = url.searchParams.get("code");
-  const [, orgSlug, action] = url.pathname.split("/");
+  const [, orgSlug, personId] = url.pathname.split("/");
 
   useEffect(() => {
     const fetchDataFromGithub = async () => {
@@ -59,16 +59,28 @@ function App() {
         setOrg(org);
         setPeople(people);
 
-        if (action === "random") {
-          const personIndex = Math.floor(Math.random() * (people.length - 1));
-          const { username } = people[personIndex];
-          const person = await fetchPersonFromGithub({
-            octokit,
-            orgSlug,
-            username,
-          });
+        if (personId) {
+          let personIndex = -1;
 
-          setPerson(person);
+          if (personId === "random") {
+            personIndex = Math.floor(Math.random() * (people.length - 1));
+          } else {
+            personIndex = people.findIndex(
+              (person) => person.id.toString() === personId
+            );
+          }
+
+          if (personIndex !== -1) {
+            const { username } = people[personIndex];
+            const person = await fetchPersonFromGithub({
+              octokit,
+              orgSlug,
+              person: personId,
+              username,
+            });
+
+            setPerson(person);
+          }
         }
       } catch (error) {
         console.error(error);
@@ -86,6 +98,7 @@ function App() {
           data: {
             code,
             org: orgSlug,
+            person: personId,
           },
           method: "post",
         });
@@ -93,6 +106,10 @@ function App() {
         setAuthenticatedUser(data.authenticatedUser);
         setOrg(data.org);
         setPeople(data.people);
+
+        if (personId) {
+          setPerson(data.person);
+        }
       } catch (error) {
         console.error(error);
 
@@ -121,6 +138,15 @@ function App() {
       document.title = `Gitémon: ${org.name}`;
     }
   }, [org]);
+
+  useEffect(() => {
+    if (person && personId !== person.id) {
+      url.pathname = `/${orgSlug}/${person.id}`;
+
+      window.history.replaceState(null, null, url.toString());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [person]);
 
   const props = {
     authenticatedUser,
@@ -156,7 +182,7 @@ function App() {
     );
   }
 
-  if (action === "random") {
+  if (personId) {
     return (
       <Layout {...props}>
         <Random {...props} />

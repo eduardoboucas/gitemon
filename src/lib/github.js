@@ -11,6 +11,7 @@ export const fetchPeople = async ({ octokit, orgSlug }) => {
     org: orgSlug,
   });
   const people = members.map((member) => ({
+    id: member.id,
     username: member.login.toLowerCase(),
     photoUrl: member.avatar_url,
   }));

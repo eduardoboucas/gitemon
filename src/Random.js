@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { getSignInLink } from "./lib/github";
 import {
   fillArray,
   getRandomNumberBetween,
@@ -22,7 +23,7 @@ const HINT_SITE = "HINT_SITE";
 const HINT_USERNAME = "HINT_USERNAME";
 const MIN_UNREVEALED_CHARS = 3;
 
-function Random({ person }) {
+function Random({ isAuthenticated, org, orgSlug, person }) {
   const [attemptCount, setAttemptCount] = useState(0);
   const [avatarSize, setAvatarSize] = useState(10);
   const [currentAnswer, setCurrentAnswer] = useState("");
@@ -163,7 +164,10 @@ function Random({ person }) {
   const getScore = () => {
     const possibleHints = getAvailableHints([]).length;
     const usedHints = hintsRevealed.length;
-    const score = 100 - Math.floor((usedHints * 100) / possibleHints);
+    const score = Math.max(
+      1,
+      100 - Math.floor((usedHints * 100) / possibleHints)
+    );
 
     return score;
   };
@@ -246,17 +250,17 @@ function Random({ person }) {
     }
   };
 
-  const name = hasWon
+  const displayName = hasWon
     ? person.name
     : obfuscateString(person.name, namePositionsRevealed);
-  const username = hasWon
+  const displayUsername = hasWon
     ? person.login
     : obfuscateString(person.login, usernamePositionsRevealed);
 
   return (
     <div>
-      <h1>{name}</h1>
-      <p>@{username}</p>
+      <h1>{displayName}</h1>
+      <p>github.com/{displayUsername}</p>
 
       <div className="person-data">
         <div className="nes-container is-rounded person">
@@ -271,11 +275,11 @@ function Random({ person }) {
             {!hasWon && <p className="title">Hints ({hintsRevealed.length})</p>}
 
             {hasWon && (
-              <div className="score-wrapper">
+              <div className="blink score-wrapper">
                 <p>
-                  <i className="blink nes-icon trophy is-large"></i>
+                  <i className="nes-icon trophy is-large"></i>
                 </p>
-                <h2 className="blink">Congratulations!</h2>
+                <h2>Congratulations!</h2>
                 <p>
                   You won with a score of <strong>{getScore()}</strong>.
                 </p>
@@ -295,27 +299,44 @@ function Random({ person }) {
         </div>
       </div>
 
-      <form className="form" onSubmit={handleAnswer}>
-        <div className="input-wrapper">
-          <input
-            className="input nes-input"
-            disabled={hasWon}
-            onChange={(event) => setCurrentAnswer(event.target.value)}
-            placeholder="Type a username or full name"
-            value={currentAnswer}
-          />
+      {!hasWon && (
+        <form className="person-form" onSubmit={handleAnswer}>
+          <div className="input-wrapper">
+            <input
+              className="input nes-input"
+              disabled={hasWon}
+              onChange={(event) => setCurrentAnswer(event.target.value)}
+              placeholder="Type a username or full name"
+              value={currentAnswer}
+            />
 
-          <button
-            disabled={hasWon}
-            type="submit"
-            className={`confirm-button nes-btn is-primary ${
-              hasWon ? "is-disabled" : ""
-            }`}
-          >
-            GO
-          </button>
-        </div>
-      </form>
+            <button
+              disabled={hasWon}
+              type="submit"
+              className={`confirm-button nes-btn is-success ${
+                hasWon ? "is-disabled" : ""
+              }`}
+            >
+              GO
+            </button>
+          </div>
+        </form>
+      )}
+
+      <div className="end-controls">
+        <a href={`/${orgSlug}/random`} className="nes-btn is-primary">
+          Catch another member of {org.name}
+        </a>
+      </div>
+
+      {!isAuthenticated && !hasWon && (
+        <sub>
+          <strong>NOTE</strong>: Only public members of the organization will
+          appear. To load all members of an organization you're part of,{" "}
+          <a href={getSignInLink()}>sign in with GitHub</a> and click the{" "}
+          <em>Grant</em> button next to the organization name.
+        </sub>
+      )}
     </div>
   );
 }

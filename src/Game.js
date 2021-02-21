@@ -86,7 +86,7 @@ function Game({ authenticatedUser, isFetching, people }) {
 
                 <button
                   type="submit"
-                  className="confirm-button nes-btn is-primary"
+                  className="confirm-button nes-btn is-success"
                 >
                   GO
                 </button>

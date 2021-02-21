@@ -30,8 +30,8 @@ function Header({ errorCode, isFetching, org, orgSlug, person }) {
     if (person) {
       return (
         <>
-          <p>You know the people of {name} — can you catch this one?</p>
-          <sub>Type their GitHub username or full name.</sub>
+          <p>{name} has great people — here's a good one!</p>
+          <sub>Type their GitHub username or full name to catch them.</sub>
           <br />
           <sub>For every failed attempt, I'll give you a hint.</sub>
         </>

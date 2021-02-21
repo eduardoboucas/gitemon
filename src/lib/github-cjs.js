@@ -1,4 +1,4 @@
-module.exports.fetch = async ({ octokit, orgSlug }) => {
+module.exports.fetchPeople = async ({ octokit, orgSlug }) => {
   const { data: user } = await octokit.users.getAuthenticated();
   const { data: org } = await octokit.orgs.get({
     org: orgSlug,
@@ -23,6 +23,28 @@ module.exports.fetch = async ({ octokit, orgSlug }) => {
     org: orgObject,
     people,
   };
+};
+
+module.exports.fetchPerson = async ({ octokit, orgSlug, username }) => {
+  const { data: user } = await octokit.users.getByUsername({
+    username,
+  });
+  const { data: commitData } = await octokit.search.commits({
+    order: "desc",
+    per_page: 100,
+    q: `author:${username} org:${orgSlug}`,
+    sort: "committer-date",
+  });
+  const commitsByRepo = commitData.items.reduce(
+    (result, commit) => ({
+      ...result,
+      [commit.repository.full_name]:
+        (result[commit.repository.full_name] || 0) + 1,
+    }),
+    {}
+  );
+
+  return { ...user, commitsByRepo };
 };
 
 module.exports.getSignInLink = () =>
