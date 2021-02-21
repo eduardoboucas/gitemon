@@ -34,3 +34,16 @@
 .links .icon {
   vertical-align: middle;
 }
+
+.blink {
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 3;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}

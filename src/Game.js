@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { formatTime, getTimeBonusForPlay } from "./lib/utils";
+import { playSound } from "./lib/sound";
 import Progress from "./Progress";
 
 import "./Game.css";
@@ -31,10 +32,6 @@ function Game({ authenticatedUser, isFetching, people }) {
     return () => clearInterval(timerId);
   });
 
-  const sound1 = new Audio("/sound/partial.mp3");
-  const sound2 = new Audio("/sound/full.mp3");
-  const sound3 = new Audio("/sound/win.mp3");
-
   const handleAnswer = (event) => {
     const candidateAnswer = currentAnswer.toLowerCase();
     const matchIndex = people.findIndex(
@@ -54,15 +51,15 @@ function Game({ authenticatedUser, isFetching, people }) {
       let sound;
 
       if (newCorrectAnswersState.length === people.length) {
-        sound = sound3;
+        sound = 2;
       } else if (isPlayer) {
-        sound = sound2;
+        sound = 1;
       } else {
-        sound = sound1;
+        sound = 1;
       }
 
       if (isSoundEnabled) {
-        sound.play();
+        playSound(sound);
       }
 
       setCorrectAnswers(newCorrectAnswersState);

@@ -1,0 +1,42 @@
+.hints-wrapper {
+  flex-grow: 1;
+  padding: 0 20px;
+}
+
+.hints-wrapper > * {
+  min-height: 100%;
+}
+
+.hints {
+  text-align: left;
+}
+
+.hints li + li {
+  margin-top: 20px;
+}
+
+.hint:before {
+  left: -30px !important;
+  top: 2px !important;
+}
+
+.person-data {
+  align-items: flex-start;
+  display: flex;
+  margin-top: 60px;
+}
+
+@media (max-width: 800px) {
+  .person-data {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.person-wrapper {
+  border: 6px solid black;
+}
+
+.score-wrapper {
+  margin-bottom: 30px;
+}

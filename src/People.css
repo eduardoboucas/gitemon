@@ -17,10 +17,6 @@
 }
 
 .person-avatar {
-  animation-name: blink;
-  animation-duration: 1s;
-  animation-timing-function: linear;
-  animation-iteration-count: 3;
   width: 100%;
 }
 
@@ -30,10 +26,4 @@
 
 .person-container {
   margin: 6px;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
 }

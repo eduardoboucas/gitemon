@@ -2,7 +2,7 @@ import React from "react";
 import PixelatedImage from "./PixelatedImage";
 import "./Header.css";
 
-function Header({ errorCode, isFetching, org, orgSlug }) {
+function Header({ errorCode, isFetching, org, orgSlug, person }) {
   const name = isFetching ? null : (org && org.name) || orgSlug;
   let { photoUrl } = org || {};
 
@@ -25,6 +25,17 @@ function Header({ errorCode, isFetching, org, orgSlug }) {
 
     if (!name) {
       return <p>Choose a GitHub organization</p>;
+    }
+
+    if (person) {
+      return (
+        <>
+          <p>You know the people of {name} — can you catch this one?</p>
+          <sub>Type their GitHub username or full name.</sub>
+          <br />
+          <sub>For every failed attempt, I'll give you a hint.</sub>
+        </>
+      );
     }
 
     return (
