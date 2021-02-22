@@ -263,15 +263,21 @@ function Random({ isAuthenticated, org, orgSlug, person }) {
       <p>github.com/{displayUsername}</p>
 
       <div className="person-data">
-        <div className="nes-container is-rounded person">
-          <PixelatedImage
-            intrinsicSize={hasWon ? AVATAR_NATURAL_SIZE : avatarSize}
-            url={person.avatar_url}
-            width={AVATAR_NATURAL_SIZE}
-          />
+        <div>
+          <div className="nes-container is-rounded person">
+            <PixelatedImage
+              intrinsicSize={hasWon ? AVATAR_NATURAL_SIZE : avatarSize}
+              url={person.avatar_url}
+              width={AVATAR_NATURAL_SIZE}
+            />
+          </div>
         </div>
         <div className="hints-wrapper">
-          <div className="nes-container with-title is-rounded is-centered">
+          <div
+            className={`nes-container with-title is-rounded is-centered ${
+              hasWon ? "score-container" : ""
+            }`}
+          >
             {!hasWon && <p className="title">Hints ({hintsRevealed.length})</p>}
 
             {hasWon && (

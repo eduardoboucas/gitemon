@@ -1,6 +1,8 @@
 .hints-wrapper {
   flex-grow: 1;
-  padding: 0 20px;
+  margin-bottom: 10px;
+  min-width: 380px;
+  padding-left: 20px;
 }
 
 .hints-wrapper > * {
@@ -21,12 +23,17 @@
 }
 
 .person-data {
-  align-items: flex-start;
+  align-items: stretch;
   display: flex;
   margin-top: 60px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 700px) {
+  .hints-wrapper {
+    margin-top: 30px;
+    padding-left: 0;
+  }
+
   .person-data {
     flex-wrap: wrap;
     justify-content: center;
@@ -37,8 +44,10 @@
   border: 6px solid black;
 }
 
-.person {
-  margin-bottom: 60px !important;
+.score-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .score-wrapper {
