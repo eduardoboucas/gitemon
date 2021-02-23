@@ -171,6 +171,16 @@ function Random({ isAuthenticated, org, orgSlug, person }) {
 
     return score;
   };
+  const requestHint = () => {
+    const hintIndex = getRandomNumberBetween(0, availableHints.length - 1);
+    const hint = availableHints[hintIndex];
+
+    console.log("Applying hint:", hint);
+
+    applyHint(hint);
+    playSound(0);
+    setAttemptCount(attemptCount + 1);
+  };
 
   const availableHints = getAvailableHints(hintsRevealed);
 
@@ -185,15 +195,6 @@ function Random({ isAuthenticated, org, orgSlug, person }) {
     if (isRightAnswer) {
       playSound(2);
       setHasWon(true);
-    } else if (availableHints.length > 0) {
-      const hintIndex = getRandomNumberBetween(0, availableHints.length - 1);
-      const hint = availableHints[hintIndex];
-
-      console.log("Applying hint:", hint);
-
-      applyHint(hint);
-      playSound(0);
-      setAttemptCount(attemptCount + 1);
     }
 
     setCurrentAnswer("");
@@ -274,11 +275,11 @@ function Random({ isAuthenticated, org, orgSlug, person }) {
         </div>
         <div className="hints-wrapper">
           <div
-            className={`nes-container with-title is-rounded is-centered ${
-              hasWon ? "score-container" : ""
-            }`}
+            className={`nes-container with-title is-rounded is-centered activity`}
           >
-            {!hasWon && <p className="title">Hints ({hintsRevealed.length})</p>}
+            {!hasWon && (
+              <p className="title">Hints ({availableHints.length} left)</p>
+            )}
 
             {hasWon && (
               <div className="blink score-wrapper">
@@ -287,19 +288,35 @@ function Random({ isAuthenticated, org, orgSlug, person }) {
                 </p>
                 <h2>Congratulations!</h2>
                 <p>
-                  You won with a score of <strong>{getScore()}</strong>.
+                  You caught{" "}
+                  <a href={`https://github.com/${person.login}`}>
+                    @{person.login}
+                  </a>{" "}
+                  with a score of <strong>{getScore()}</strong>.
                 </p>
               </div>
             )}
 
             {!hasWon && (
-              <ul className="nes-list is-disc hints">
-                {hintsRevealed.map((hint, index) => (
-                  <li className="hint blink" key={hint.id}>
-                    {displayHint(hint)}
-                  </li>
-                ))}
-              </ul>
+              <div className="hints">
+                <ul className="nes-list is-disc">
+                  {hintsRevealed.map((hint) => (
+                    <li className="hint blink" key={hint.id}>
+                      {displayHint(hint)}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  className={`nes-btn is-primary ${
+                    availableHints.length === 0 ? "is-disabled" : ""
+                  }`}
+                  disabled={availableHints.length === 0}
+                  onClick={requestHint}
+                  type="button"
+                >
+                  Help me!
+                </button>
+              </div>
             )}
           </div>
         </div>

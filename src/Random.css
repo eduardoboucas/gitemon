@@ -10,6 +10,10 @@
 }
 
 .hints {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: left;
 }
 
@@ -51,6 +55,10 @@
 }
 
 .score-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
   margin-bottom: 30px;
 }
 
@@ -60,4 +68,9 @@
 
 .person-form {
   margin-top: 30px;
+}
+
+.activity {
+  display: flex;
+  flex-direction: column;
 }
