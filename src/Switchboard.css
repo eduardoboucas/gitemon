@@ -13,3 +13,7 @@
   flex-grow: 1;
   width: auto;
 }
+
+.switchboard-buttons {
+  margin-top: 20px;
+}

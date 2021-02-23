@@ -2,8 +2,13 @@ import { Octokit } from "@octokit/rest";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Layout from "./Layout";
-import { fetch as fetchFromGithub, getSignInLink } from "./lib/github";
+import {
+  fetchPeople as fetchPeopleFromGithub,
+  fetchPerson as fetchPersonFromGithub,
+  getSignInLink,
+} from "./lib/github";
 import Game from "./Game";
+import Random from "./Random";
 import Switchboard from "./Switchboard";
 import "./App.css";
 
@@ -34,10 +39,11 @@ function App() {
   const [isFetching, setIsFetching] = useState(false);
   const [org, setOrg] = useState();
   const [people, setPeople] = useState([]);
+  const [person, setPerson] = useState();
 
   const url = new URL(window.location.href);
   const code = url.searchParams.get("code");
-  const [, orgSlug] = url.pathname.split("/");
+  const [, orgSlug, personId] = url.pathname.split("/");
 
   useEffect(() => {
     const fetchDataFromGithub = async () => {
@@ -45,13 +51,37 @@ function App() {
 
       try {
         const octokit = new Octokit();
-        const { org, people } = await fetchFromGithub({
+        const { org, people } = await fetchPeopleFromGithub({
           octokit,
           orgSlug,
         });
 
         setOrg(org);
         setPeople(people);
+
+        if (personId) {
+          let personIndex = -1;
+
+          if (personId === "random") {
+            personIndex = Math.floor(Math.random() * (people.length - 1));
+          } else {
+            personIndex = people.findIndex(
+              (person) => person.id.toString() === personId
+            );
+          }
+
+          if (personIndex !== -1) {
+            const { username } = people[personIndex];
+            const person = await fetchPersonFromGithub({
+              octokit,
+              orgSlug,
+              person: personId,
+              username,
+            });
+
+            setPerson(person);
+          }
+        }
       } catch (error) {
         console.error(error);
 
@@ -68,6 +98,7 @@ function App() {
           data: {
             code,
             org: orgSlug,
+            person: personId,
           },
           method: "post",
         });
@@ -75,6 +106,10 @@ function App() {
         setAuthenticatedUser(data.authenticatedUser);
         setOrg(data.org);
         setPeople(data.people);
+
+        if (personId) {
+          setPerson(data.person);
+        }
       } catch (error) {
         console.error(error);
 
@@ -104,11 +139,21 @@ function App() {
     }
   }, [org]);
 
+  useEffect(() => {
+    if (person && personId !== person.id) {
+      url.pathname = `/${orgSlug}/${person.id}`;
+
+      window.history.replaceState(null, null, url.toString());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [person]);
+
   const props = {
     authenticatedUser,
     errorCode,
     isFetching,
     people,
+    person,
     org,
     orgSlug,
   };
@@ -124,7 +169,7 @@ function App() {
   if (isFetching) {
     return (
       <Layout {...props}>
-        <p>Loading the GitHub organization...</p>
+        <p>Loading data from GitHub...</p>
       </Layout>
     );
   }
@@ -133,6 +178,14 @@ function App() {
     return (
       <Layout {...props} orgSlug={null}>
         {renderErrorMessage({ code: errorCode, orgSlug })}
+      </Layout>
+    );
+  }
+
+  if (personId) {
+    return (
+      <Layout {...props}>
+        <Random {...props} />
       </Layout>
     );
   }

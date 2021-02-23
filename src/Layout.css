@@ -3,4 +3,9 @@
   padding-bottom: 80px;
   position: relative;
   text-align: center;
+  word-break: break-word;
+}
+
+.nes-btn {
+  word-break: keep-all;
 }

@@ -20,7 +20,7 @@ function People({ correctAnswers, people }) {
                   >
                     <img
                       alt=""
-                      className="person-avatar"
+                      className="person-avatar blink"
                       src={person.photoUrl}
                       title={person.username}
                     />
