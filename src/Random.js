@@ -235,6 +235,11 @@ function Random({ isAuthenticated, org, orgSlug, person }) {
     }
 
     if (hint.type === HINT_SITE) {
+      if (
+        person.blog.indexOf("http://") != 0 &&
+        person.blog.indexOf("https://") != 0
+      )
+        person.blog = "https://" + person.blog;
       return (
         <>
           Has a website at <a href={person.blog}>{person.blog}</a>
